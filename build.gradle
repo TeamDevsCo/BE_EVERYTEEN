@@ -3,10 +3,13 @@ plugins {
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.ec4j.editorconfig' version '0.1.0'
+  id 'checkstyle'
 }
 
 group = 'co.devsco'
 version = '0.0.1-SNAPSHOT'
+
 
 java {
 	toolchain {
@@ -27,6 +30,29 @@ repositories {
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
 }
+
+editorconfig {
+	excludes = ['build', 'out', '.idea']
+}
+
+checkstyle {
+  toolVersion = '10.20.2' // Checkstyle 버전
+  configFile = file('checkstyle/checkstyle-checker.xml') // 규칙 파일 경로
+}
+
+tasks.withType(Checkstyle).configureEach {
+  reports {
+    xml.required = true // XML 형식의 결과 보고서 활성화
+    xml.outputLocation = layout.buildDirectory.file("checkstyle/checkstyle-result.xml") // 출력 경로 설정
+    html.required = false // HTML 형식의 보고서 비활성화 (필요 시 true로 설정)
+  }
+}
+
+tasks.named('check') {
+  dependsOn 'checkstyleMain'
+}
+
+check.dependsOn editorconfigCheck // checkstyle이 설정 되어 있을 시, editorconfigCheck 후 checkstyle 진행
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
