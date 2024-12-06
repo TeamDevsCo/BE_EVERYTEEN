@@ -1,13 +1,12 @@
-package co.devsco.everyteen_be;
+package com.devsco.everyteen;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EveryteenBeApplicationTests {
+class EveryteenApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+  @Test
+  void contextLoads() {
+  }
 }
