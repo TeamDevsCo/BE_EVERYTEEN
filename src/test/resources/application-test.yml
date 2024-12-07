@@ -1,0 +1,32 @@
+spring:
+
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:file:./build/h2db/testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        show_sql: true
+        database: H2
+        hbm2ddl:
+          auto: create
+    open-in-view: false
+
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
