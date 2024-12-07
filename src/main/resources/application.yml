@@ -4,16 +4,16 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update  # 테이블이 없을 경우 생성, 테이블이 있을 경우 변경사항을 반영
+      ddl-auto: create  # 테이블이 없을 경우 생성, 테이블이 있을 경우 변경사항을 반영
     properties:
       hibernate:
         show_sql: false
         format_sql: false
         default_batch_fetch_size: 100
     open-in-view: false
+    show-sql: true
 
 logging:
   level:
-    org:
-      springframework:
-        web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "test_entity")
+@Table(name = "test_entity", schema = "everyteen")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
