@@ -19,7 +19,13 @@ spring:
         database: H2
         ddl-auto: create
     open-in-view: false
+    show-sql: true
 
   h2:
     console:
       enabled: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
