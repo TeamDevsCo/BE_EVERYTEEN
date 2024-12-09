@@ -1,5 +1,6 @@
 package com.devsco.everyteen.exception;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.ProblemDetail;
@@ -10,36 +11,43 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 public record CustomErrorResponse(
   String title,
   String detail,
   int status,
+  @JsonProperty("invalids")
   List<FieldErrorInfo> invalids
 ) {
 
-  public CustomErrorResponse(ProblemDetail problem) {
+
+  private CustomErrorResponse(ProblemDetail problem) {
     this(problem.getTitle(), problem.getDetail(), problem.getStatus(), new ArrayList<>());
   }
 
-  public static CustomErrorResponse from(MethodArgumentNotValidException ex) {
-    CustomErrorResponse errorResponse = new CustomErrorResponse(ex.getBody());
-    errorResponse.invalids.addAll(FieldErrorInfo.from(ex.getAllErrors()));
-    return new CustomErrorResponse(ex.getBody());
+  public static CustomErrorResponse from(ProblemDetail detail) {
+    return new CustomErrorResponse(detail);
   }
 
-  public static CustomErrorResponse from(HandlerMethodValidationException ex) {
+  public static CustomErrorResponse withInvalids(MethodArgumentNotValidException ex) {
     CustomErrorResponse errorResponse = new CustomErrorResponse(ex.getBody());
     errorResponse.invalids.addAll(FieldErrorInfo.from(ex.getAllErrors()));
-    return new CustomErrorResponse(ex.getBody());
+    return errorResponse;
+  }
+
+  public static CustomErrorResponse withInvalids(HandlerMethodValidationException ex) {
+    CustomErrorResponse errorResponse = new CustomErrorResponse(ex.getBody());
+    errorResponse.invalids.addAll(FieldErrorInfo.from(ex.getAllErrors()));
+    return errorResponse;
   }
 
   @Builder
   public record FieldErrorInfo(
-    String field,
-    String message,
-    Object[] arguments,
-    String rejectValue,
-    String[] codes
+    @JsonProperty("field") String field,
+    @JsonProperty("message") String message,
+    @JsonProperty("arguments") Object[] arguments,
+    @JsonProperty("rejectValue") String rejectValue,
+    @JsonProperty("codes") String[] codes
   ) {
 
     public static List<FieldErrorInfo> from(List<? extends MessageSourceResolvable> errors) {
