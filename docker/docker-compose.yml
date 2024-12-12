@@ -1,4 +1,17 @@
 services:
+  nginx_ui:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx_manager
+    restart: unless-stopped
+    ports:
+      - '80:80' # Public HTTP Port
+      - '81:81' # Public HTTPS Port
+      - '443:443' # Admin Web Port
+    volumes:
+      - /home/ubuntu/nginx_proxy_manager/data:/data
+      - /home/ubuntu/letsencrypt:/etc/letsencrypt
+    networks:
+      - everyteen-network
   postgres:
       image: postgres:16-alpine
       container_name: postgres
