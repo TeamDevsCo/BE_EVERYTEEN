@@ -1,0 +1,19 @@
+services:
+  postgres:
+      image: postgres:16-alpine
+      container_name: postgres
+      environment:
+        POSTGRES_DB: ${DB_NAME}
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+      volumes:
+        - /home/ubuntu/db/data:/var/lib/postgresql/data
+        - /home/ubuntu/db/initdb.d:/docker-entrypoint-initdb.d
+      ports:
+        - 5432:5432  # PostgreSQL 기본 포트
+      networks:
+        - everyteen-network
+networks:
+  everyteen-network:
+    driver: bridge
+    external: true
