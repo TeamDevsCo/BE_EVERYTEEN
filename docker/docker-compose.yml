@@ -15,7 +15,7 @@ services:
     networks:
       - everyteen-network
     restart: on-failure
-    
+
   nginx_ui:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx_manager
@@ -31,20 +31,20 @@ services:
       - everyteen-network
 
   postgres:
-      image: postgres:16-alpine
-      container_name: postgres
-      environment:
-        POSTGRES_DB: ${DB_NAME}
-        POSTGRES_USER: ${DB_USER}
-        POSTGRES_PASSWORD: ${DB_PASSWORD}
-      volumes:
-        - /home/ubuntu/db/data:/var/lib/postgresql/data
-        - /home/ubuntu/db/initdb.d:/docker-entrypoint-initdb.d
-      ports:
-        - 5432:5432  # PostgreSQL 기본 포트
-      networks:
-        - everyteen-network
-  
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - /home/ubuntu/db/data:/var/lib/postgresql/data
+      - /home/ubuntu/db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432  # PostgreSQL 기본 포트
+    networks:
+      - everyteen-network
+
 networks:
   everyteen-network:
     driver: bridge
