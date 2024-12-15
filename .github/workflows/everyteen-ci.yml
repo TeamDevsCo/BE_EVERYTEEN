@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "develop" ]
 
-env: 
+env:
   REGISTRY: docker.io
   IMAGE_NAME: be_everyteen
 
@@ -15,21 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: ⬆️ Checkout repository # 러너 환경에서 develop 브랜치의 코드를 가져오는 단계
-      uses: actions/checkout@v4
-    
-    - name: 🔰 Log in to Docker hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: ⬆️ Checkout repository # 러너 환경에서 develop 브랜치의 코드를 가져오는 단계
+        uses: actions/checkout@v4
 
-    - name: ⚙️ Set up QEMU  # 멀티 아키텍쳐 지원 (ARM, x86_)
-      uses: docker/setup-buildx-action@v3
+      - name: 🔰 Log in to Docker hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: ⚒️ Build and push
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+      - name: ⚙️ Set up QEMU  # 멀티 아키텍쳐 지원 (ARM, x86_)
+        uses: docker/setup-buildx-action@v3
+
+      - name: ⚒️ Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
