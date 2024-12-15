@@ -32,7 +32,7 @@ ext {
 }
 
 editorconfig {
-	excludes = ['build', 'out', '.idea']
+	excludes = ['build', 'out', '.idea', 'docker', '.github', 'checkstyle']
 }
 
 checkstyle {
