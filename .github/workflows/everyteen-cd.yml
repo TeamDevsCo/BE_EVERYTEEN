@@ -5,7 +5,7 @@ on:
     workflows:
       - everyteen-be-app CI
     types:
-      - completed
+      - success
       
 env:
   REGISTRY: docker.io
