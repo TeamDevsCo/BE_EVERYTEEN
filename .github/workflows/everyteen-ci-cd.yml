@@ -43,6 +43,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: dev
+    needs: build-and-push-image  # build-and-push-image job이 성공해야만 실행
 
     steps:
     - name: 🔑 executing remote ssh && deploy with docker-compose
