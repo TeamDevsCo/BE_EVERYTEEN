@@ -1,4 +1,4 @@
-name: everyteen-be-app CI
+name: everyteen-be-app CI/CD
 
 on:
   push:
@@ -39,3 +39,24 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    - name: 🔑 executing remote ssh && deploy with docker-compose
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.HOST_NAME }}
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            cd ${{ secrets.DOCKER_COMPOSE_PATH }}
+            docker-compose down
+            docker-compose up -d
+            docker image prune -f
+            docker ps -a
+    
